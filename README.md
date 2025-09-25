@@ -21,9 +21,12 @@ sudo apt install python3 python3-pip python3-venv nginx -y
 
 Step 2: Set Up Virtual Environment and Install Dependencies
 
-Navigate to the Django app directory and create a virtual environment:
+Pull and navigate to the Django app directory and create a virtual environment:
 ```bash
-cd /home/ubuntu/my_project
+cd /home/ubuntu/
+git clone https://github.com/your-username/my-project
+cd my-project
+
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
