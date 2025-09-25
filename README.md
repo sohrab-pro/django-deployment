@@ -1,51 +1,47 @@
-Django App Deployment Guide - Ubuntu
+# Django App Deployment Guide - Ubuntu
 
 Deploy Django app on Ubuntu
 
-App Location: /home/ubuntu/my_project
+**App Location**: `/home/ubuntu/my_project`
 
-Prerequisites
+## Prerequisites
+- Instance running Ubuntu
+- Domain access to configure DNS (yourdomain.com)
+- Django app with `requirements.txt` and `manage.py`
 
-Instance running Ubuntu
-
-Domain access to configure DNS (yourdomain.com)
-
-Django app with requirements.txt and manage.py
-
-Step 1: Prepare Your Ubuntu Instance
+## Step 1: Prepare Your Ubuntu Instance
 
 Update system and install required packages:
 
+```bash
 sudo apt update
 sudo apt upgrade -y
 sudo apt install python3 python3-pip python3-venv nginx -y
+```
 
 Step 2: Set Up Virtual Environment and Install Dependencies
 
 Navigate to the Django app directory and create a virtual environment:
-
+```bash
 cd /home/ubuntu/my_project
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
+```
 
 Step 3: Test Your Django App
 
 Verify the Django app works correctly by running:
-
+```bash
 python manage.py runserver
-
-
+```
 Test locally, then stop the development server (Ctrl+C).
 
 Step 4: Create a Gunicorn Service File
 
 Create systemd service file for Gunicorn:
-
+```bash
 sudo nano /etc/systemd/system/my-project.service
-
-
-Add this content:
 
 [Unit]
 Description=Gunicorn instance to serve my-project
@@ -62,24 +58,26 @@ Restart=always
 
 [Install]
 WantedBy=multi-user.target
+```
 
 Step 5: Start and Enable the Service
 
 Start Gunicorn and enable it to run on boot:
-
+```bash
 sudo systemctl start my-project
 sudo systemctl enable my-project
 sudo systemctl status my-project
+```
 
 Step 6: Configure Nginx
 
 Create Nginx configuration file for your domain:
-
+```bash
 sudo nano /etc/nginx/sites-available/yourdomain.com
-
+```
 
 Add this configuration:
-
+```bash
 server {
     listen 80;
     server_name yourdomain.com;
@@ -89,14 +87,16 @@ server {
         proxy_pass http://unix:/home/ubuntu/my_project/my-project.sock;
     }
 }
+```
 
 Step 7: Enable the Nginx Site
 
 Enable the site and restart Nginx:
-
+```bash
 sudo ln -s /etc/nginx/sites-available/yourdomain.com /etc/nginx/sites-enabled
 sudo nginx -t
 sudo systemctl restart nginx
+```
 
 Step 8: Configure Domain DNS
 
@@ -117,8 +117,9 @@ Note: The @ symbol represents the root domain (e.g., yourdomain.com). Some DNS p
 Step 9: Test Your Deployment
 
 Wait for DNS propagation (5-30 minutes), then test:
-
+```bash
 curl -I http://yourdomain.com
+```
 
 Step 10: Final Verification
 
@@ -129,7 +130,7 @@ http://yourdomain.com
 Troubleshooting Commands
 
 If you encounter issues:
-
+```bash
 # Check service status
 sudo systemctl status my-project
 
@@ -147,6 +148,7 @@ sudo chmod o+x /home/ubuntu /home/ubuntu/my_project
 
 # Test Nginx configuration
 sudo nginx -t
+```
 
 Important Notes
 
