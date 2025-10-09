@@ -67,8 +67,16 @@ Restart=always
 WantedBy=multi-user.target
 ```
 
+## Step 5: Apply permissions.
 
-## Step 5: Start and Enable the Service
+Apply the following permissions to your project directory.:
+```bash
+sudo chown -R www-data:www-data /home/ubuntu/folder
+sudo chmod -R 775 /home/ubuntu/folder
+sudo chmod o+x /home/ubuntu /home/ubuntu/folder
+```
+
+## Step 6: Start and Enable the Service
 
 Start Gunicorn and enable it to run on boot:
 ```bash
@@ -78,7 +86,7 @@ sudo systemctl status my-project
 ```
 
 
-## Step 6: Configure Nginx
+## Step 7: Configure Nginx
 
 Create Nginx configuration file for your domain:
 ```bash
@@ -99,7 +107,7 @@ server {
 ```
 
 
-## Step 7: Enable the Nginx Site
+## Step 8: Enable the Nginx Site
 
 Enable the site and restart Nginx:
 ```bash
@@ -109,7 +117,7 @@ sudo systemctl restart nginx
 ```
 
 
-## Step 8: Configure Domain DNS
+## Step 9: Configure Domain DNS
 
 In your domain registrar/DNS provider:
 
@@ -126,7 +134,7 @@ TTL: 300 (or default)
 Note: The @ symbol represents the root domain (e.g., yourdomain.com). Some DNS providers may use a blank field instead. Refer to their specific instructions.
 
 
-## Step 9: Test your domain and set Up SSL with Let's Encrypt (Recommended)
+## Step 10: Test your domain and set Up SSL with Let's Encrypt (Recommended)
 
 Allow firewall (Allow HTTP and HTTPS Traffic):
 ```bash
@@ -154,7 +162,7 @@ sudo certbot renew --dry-run
 ```
 
 
-Step 10: Final Verification
+Step 11: Final Verification
 
 Your site should now be accessible at:
 
