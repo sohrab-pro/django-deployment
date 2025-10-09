@@ -71,7 +71,7 @@ WantedBy=multi-user.target
 
 Apply the following permissions to your project directory.:
 ```bash
-sudo chown -R www-data:www-data /home/ubuntu/folder
+sudo chown -R ubuntu:www-data /home/ubuntu/folder
 sudo chmod -R 775 /home/ubuntu/folder
 sudo chmod o+x /home/ubuntu /home/ubuntu/folder
 ```
