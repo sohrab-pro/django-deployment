@@ -59,6 +59,7 @@ User=ubuntu
 Group=www-data
 WorkingDirectory=/home/ubuntu/my_project
 Environment="PATH=/home/ubuntu/my_project/venv/bin"
+Environment="DJANGO_SETTINGS_MODULE=my_project.settings"
 ExecStart=/home/ubuntu/my_project/venv/bin/gunicorn --workers 3 --bind unix:/home/ubuntu/my_project/my-project.sock my_project.wsgi:application
 ExecReload=/bin/kill -s HUP $MAINPID
 Restart=always
