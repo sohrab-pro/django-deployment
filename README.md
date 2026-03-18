@@ -50,7 +50,9 @@ Test locally, then stop the development server (Ctrl+C).
 Create systemd service file for Gunicorn:
 ```bash
 sudo nano /etc/systemd/system/my-project.service
+```
 
+```bash
 [Unit]
 Description=Gunicorn instance to serve project
 After=network.target
