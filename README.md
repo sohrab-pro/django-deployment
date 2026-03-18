@@ -52,18 +52,23 @@ Create systemd service file for Gunicorn:
 sudo nano /etc/systemd/system/my-project.service
 
 [Unit]
-Description=Gunicorn instance to serve my-project
+Description=Gunicorn instance to serve project
 After=network.target
 
 [Service]
 User=ubuntu
 Group=www-data
-WorkingDirectory=/home/ubuntu/my_project
-Environment="PATH=/home/ubuntu/my_project/env/bin"
-Environment="DJANGO_SETTINGS_MODULE=my_project.settings"
-ExecStart=/home/ubuntu/my_project/env/bin/gunicorn --workers 3 --bind unix:/home/ubuntu/my_project/my-project.sock my_project.wsgi:application
+WorkingDirectory=/home/ubuntu/project/scraper
+Environment="PATH=/home/ubuntu/project/env/bin"
+Environment="DJANGO_SETTINGS_MODULE=project.settings"
+ExecStart=/home/ubuntu/project/env/bin/gunicorn --workers 3 --timeout 300 --graceful-timeout 300 --keep-alive 5 --bind unix:/home/ubuntu/project/scraper.sock project.wsgi:application
 ExecReload=/bin/kill -s HUP $MAINPID
 Restart=always
+RestartSec=5s
+
+# Resource limits (prevent OOM kills)
+MemoryLimit=4G
+CPUQuota=200%
 
 [Install]
 WantedBy=multi-user.target
@@ -98,12 +103,18 @@ sudo nano /etc/nginx/sites-available/yourdomain.com
 Add this configuration:
 ```bash
 server {
-    listen 80;
-    server_name yourdomain.com;
+    server_name compliance-iq.ursalerts.com;
 
     location / {
         include proxy_params;
-        proxy_pass http://unix:/home/ubuntu/my_project/my-project.sock;
+        proxy_pass http://unix:/home/ubuntu/project/project.sock;
+        proxy_read_timeout    300s;
+        proxy_connect_timeout 300s;
+        proxy_send_timeout    300s;
+    }
+
+    location /static/ {
+        alias /home/ubuntu/project/staticfiles/;
     }
 }
 ```
@@ -113,7 +124,7 @@ server {
 
 Enable the site and restart Nginx:
 ```bash
-sudo ln -s /etc/nginx/sites-available/yourdomain.com /etc/nginx/sites-enabled
+sudo ln -s /etc/nginx/sites-available/domain /etc/nginx/sites-enabled
 sudo nginx -t
 sudo systemctl restart nginx
 ```
