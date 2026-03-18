@@ -29,8 +29,8 @@ cd /home/ubuntu/
 git clone https://github.com/your-username/my-project
 cd my-project
 
-python3 -m venv venv
-source venv/bin/activate
+python3 -m env env
+source env/bin/activate
 pip install -r requirements.txt
 ```
 
@@ -58,9 +58,9 @@ After=network.target
 User=ubuntu
 Group=www-data
 WorkingDirectory=/home/ubuntu/my_project
-Environment="PATH=/home/ubuntu/my_project/venv/bin"
+Environment="PATH=/home/ubuntu/my_project/env/bin"
 Environment="DJANGO_SETTINGS_MODULE=my_project.settings"
-ExecStart=/home/ubuntu/my_project/venv/bin/gunicorn --workers 3 --bind unix:/home/ubuntu/my_project/my-project.sock my_project.wsgi:application
+ExecStart=/home/ubuntu/my_project/env/bin/gunicorn --workers 3 --bind unix:/home/ubuntu/my_project/my-project.sock my_project.wsgi:application
 ExecReload=/bin/kill -s HUP $MAINPID
 Restart=always
 
