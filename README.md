@@ -58,6 +58,7 @@ Description=Gunicorn instance to serve project
 After=network.target
 
 [Service]
+UMask=0007
 User=ubuntu
 Group=www-data
 WorkingDirectory=/home/ubuntu/project/scraper
@@ -83,6 +84,9 @@ Apply the following permissions to your project directory.:
 sudo chown -R ubuntu:www-data /home/ubuntu/folder
 sudo chmod -R 775 /home/ubuntu/folder
 sudo chmod o+x /home/ubuntu /home/ubuntu/folder
+chmod o+x /home/ubuntu
+chmod o+x /home/ubuntu/project
+chmod o+x /home/ubuntu/project
 ```
 
 ## Step 6: Start and Enable the Service
