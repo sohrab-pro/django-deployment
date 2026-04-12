@@ -29,7 +29,7 @@ cd /home/ubuntu/
 git clone https://github.com/your-username/my-project
 cd my-project
 
-python3 -m env env
+python3 -m venv env
 source env/bin/activate
 pip install gunicorn
 pip install -r requirements.txt
