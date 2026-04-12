@@ -86,7 +86,6 @@ sudo chmod -R 775 /home/ubuntu/folder
 sudo chmod o+x /home/ubuntu /home/ubuntu/folder
 chmod o+x /home/ubuntu
 chmod o+x /home/ubuntu/project
-chmod o+x /home/ubuntu/project
 ```
 
 ## Step 6: Start and Enable the Service
