@@ -61,16 +61,16 @@ After=network.target
 UMask=0007
 User=ubuntu
 Group=www-data
-WorkingDirectory=/home/ubuntu/project/scraper
+WorkingDirectory=/home/ubuntu/project
 Environment="PATH=/home/ubuntu/project/env/bin"
 Environment="DJANGO_SETTINGS_MODULE=project.settings"
-ExecStart=/home/ubuntu/project/env/bin/gunicorn --workers 3 --timeout 300 --graceful-timeout 300 --keep-alive 5 --bind unix:/home/ubuntu/project/scraper.sock project.wsgi:application
+ExecStart=/home/ubuntu/project/env/bin/gunicorn --workers 3 --timeout 300 --graceful-timeout 300 --keep-alive 5 --bind unix:/home/ubuntu/project/project.sock project.wsgi:application
 ExecReload=/bin/kill -s HUP $MAINPID
 Restart=always
 RestartSec=5s
 
 # Resource limits (prevent OOM kills)
-MemoryLimit=4G
+MemoryMax=4G
 CPUQuota=200%
 
 [Install]
